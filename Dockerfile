@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 
-FROM oven/bun:1-alpine AS base
+# Pinned: the install stage runs --frozen-lockfile, so a floating `1-alpine`
+# tag breaks the build the day the base image picks up a newer bun.
+FROM oven/bun:1.3.14-alpine AS base
 WORKDIR /app
 
 # ---------------------------------------------------------------------------
@@ -19,7 +21,7 @@ FROM base AS release
 LABEL org.opencontainers.image.title="Brønnøysundregistrene MCP Server" \
       org.opencontainers.image.description="MCP server for Brønnøysundregistrene (Norwegian Business Registry)" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.source="https://github.com/bergea1/mcp-server-brreg"
+      org.opencontainers.image.source="https://github.com/Nationen-GH/mcp-server-brreg"
 
 COPY --from=install /app/node_modules ./node_modules
 COPY package.json tsconfig.json ./

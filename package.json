@@ -11,6 +11,15 @@
     "norway",
     "open-data"
   ],
+  "homepage": "https://github.com/Nationen-GH/mcp-server-brreg#readme",
+  "bugs": {
+    "url": "https://github.com/Nationen-GH/mcp-server-brreg/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nationen-GH/mcp-server-brreg.git"
+  },
+  "author": "Aleksander Mikal Berge",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
