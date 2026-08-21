@@ -1,6 +1,6 @@
 # Brønnøysundregistrene MCP Server
 
-En [Model Context Protocol](https://modelcontextprotocol.io)-server som gir
+En [MCP](https://modelcontextprotocol.io)-server som gir
 språkmodeller tilgang til
 [Enhetsregisteret](https://data.brreg.no/enhetsregisteret/api/docs/index.html)
 — norske foretak, underenheter, roller, næringskoder og kommuner.
@@ -174,7 +174,12 @@ paginering, hierarkisk `naeringskode`, at registeret bruker SN2025, og at
 400-svar inneholder `valideringsfeil`. En ukentlig GitHub Actions-jobb kjører
 dem og åpner en issue hvis noe har endret seg oppstrøms.
 
-Se [.claude/CLAUDE.md](.claude/CLAUDE.md) for arkitektur og konvensjoner.
+Se [CONTRIBUTING.md](CONTRIBUTING.md) for konvensjoner og hvordan du legger til
+et verktøy, [.claude/CLAUDE.md](.claude/CLAUDE.md) for arkitektur, og
+[SECURITY.md](SECURITY.md) for hvordan du rapporterer en sårbarhet.
+
+GitHub leser ikke «About»-feltene fra repoet. `./scripts/sync-github-metadata.sh`
+skyver beskrivelse, hjemmeside og topics dit fra én kilde i repoet.
 
 ---
 

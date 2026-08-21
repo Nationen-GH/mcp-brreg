@@ -33,7 +33,7 @@
         "args": [
           "run", "-i", "--rm",
           "-e", "TRANSPORT=stdio",
-          "ghcr.io/bergea1/mcp-server-brreg:latest"
+          "ghcr.io/nationen-gh/mcp-server-brreg:latest"
         ]
       }
     }
