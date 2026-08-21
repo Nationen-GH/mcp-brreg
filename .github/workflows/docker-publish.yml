@@ -32,11 +32,23 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
+          # The semver rules only fire on a tag ref. Without the last two rules a
+          # workflow_dispatch run from a branch derives no tags at all, and
+          # buildx fails with "tag is needed when pushing to registry".
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=raw,value=latest,enable=${{ github.ref_type == 'tag' }}
+            type=raw,value=edge,enable=${{ github.ref_type != 'tag' }}
+            type=sha,enable=${{ github.ref_type != 'tag' }}
+          # These are passed to buildx as --label, which overrides the LABEL
+          # lines in the Dockerfile. Without them metadata-action derives the
+          # title from the repository name and the description from the GitHub
+          # "About" text, so a published image disagrees with the Dockerfile.
+          labels: |
+            org.opencontainers.image.title=Brønnøysundregistrene MCP Server
+            org.opencontainers.image.description=MCP server for Brønnøysundregistrene (Norwegian Business Registry)
 
       - name: Build and push
         uses: docker/build-push-action@v7

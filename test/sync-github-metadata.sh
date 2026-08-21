@@ -5,8 +5,8 @@
 # repository — they are server-side settings. This script makes the repo the
 # source of truth anyway: edit the values below, run it, and GitHub matches.
 #
-#   ./scripts/sync-github-metadata.sh          # apply
-#   ./scripts/sync-github-metadata.sh --dry-run  # print what would change
+#   ./test/sync-github-metadata.sh          # apply
+#   ./test/sync-github-metadata.sh --dry-run  # print what would change
 #
 # Requires the GitHub CLI, authenticated with admin rights on the repo:
 #   gh auth login

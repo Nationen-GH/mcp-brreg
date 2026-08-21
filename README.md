@@ -178,7 +178,7 @@ Se [CONTRIBUTING.md](CONTRIBUTING.md) for konvensjoner og hvordan du legger til
 et verktøy, [.claude/CLAUDE.md](.claude/CLAUDE.md) for arkitektur, og
 [SECURITY.md](SECURITY.md) for hvordan du rapporterer en sårbarhet.
 
-GitHub leser ikke «About»-feltene fra repoet. `./scripts/sync-github-metadata.sh`
+GitHub leser ikke «About»-feltene fra repoet. `./test/sync-github-metadata.sh`
 skyver beskrivelse, hjemmeside og topics dit fra én kilde i repoet.
 
 ---
