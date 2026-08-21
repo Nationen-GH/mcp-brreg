@@ -1,6 +1,11 @@
 version: 2
 updates:
-  - package-ecosystem: npm
+  # `bun`, not `npm`. The npm ecosystem reads package.json but has no idea
+  # bun.lock exists, so it opens PRs that bump package.json and leave the
+  # lockfile stale — which `bun install --frozen-lockfile` then rejects in every
+  # CI job and in the Docker build. Dependabot's dedicated bun ecosystem
+  # (bun >= 1.1.39) updates both files together.
+  - package-ecosystem: bun
     directory: /
     schedule:
       interval: weekly
@@ -20,3 +25,9 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # The bun version in the Dockerfile is deliberately coupled to
+      # `bun-version` in the workflows and to the version bun.lock was generated
+      # with. Bumping the base image on its own drifts the three apart, so bump
+      # them together by hand — see CONTRIBUTING.md.
+      - dependency-name: oven/bun
