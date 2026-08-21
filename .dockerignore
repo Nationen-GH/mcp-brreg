@@ -1,0 +1,32 @@
+# Everything the runtime image does not need. Keeping this tight matters for
+# build cache hits as well as image size — data/nace-codes-full.json is 1.7 MB
+# and is the only large file that must ship.
+.git
+.github
+.claude
+.gitignore
+.dockerignore
+.npmignore
+.prettierrc.json
+node_modules
+dist
+test
+scripts
+coverage
+.nyc_output
+*.tsbuildinfo
+bun.lockb
+package-lock.json
+CLAUDE.md
+README.md
+LICENSE
+docker-compose.yml
+docker-compose.*.yml
+build-and-run.sh
+mcp-config.json
+*.log
+.env
+.env.*
+.vscode
+.idea
+.DS_Store

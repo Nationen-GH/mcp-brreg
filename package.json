@@ -1,0 +1,62 @@
+{
+  "name": "mcp-server-brreg",
+  "version": "1.1.0",
+  "description": "Model Context Protocol server for Br\u00f8nn\u00f8ysundregistrene (the Norwegian Business Registry)",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "brreg",
+    "bronnoysundregistrene",
+    "enhetsregisteret",
+    "norway",
+    "open-data"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "mcp-server-brreg": "dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "data",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch run src/index.ts",
+    "build": "tsc && chmod +x dist/index.js",
+    "prepublishOnly": "bun run build",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "test:integration": "BRREG_RUN_INTEGRATION=1 bun test",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
+    "smoke": "bun run build && node scripts/smoke-stdio.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.0.0",
+    "prettier": "^3.3.0",
+    "typescript": "^5.6.0"
+  }
+}
