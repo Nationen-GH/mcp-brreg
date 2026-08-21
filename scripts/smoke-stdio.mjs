@@ -20,8 +20,6 @@ const entrypoint = join(repoRoot, 'dist', 'index.js');
 const transport = new StdioClientTransport({
   command: process.execPath,
   args: [entrypoint],
-  // Deliberately not the repo root: the server must resolve its data file
-  // relative to its own module, not to process.cwd().
   cwd: tmpdir(),
   env: { ...process.env, TRANSPORT: 'stdio', PATH: process.env.PATH ?? '' },
   stderr: 'inherit',
