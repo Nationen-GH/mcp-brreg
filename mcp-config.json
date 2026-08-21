@@ -1,0 +1,53 @@
+{
+  "_comment": "Each block below is a COMPLETE mcpServers config. Copy exactly one into your MCP client config (Claude Desktop, Claude Code, Cursor, LibreChat, ...) and replace placeholder paths, hosts and tokens. Every variant uses the same server key, \"brreg\", so the tool names your model sees (mcp__brreg__search_companies, ...) stay identical when you switch transport.",
+
+  "local-bun": {
+    "mcpServers": {
+      "brreg": {
+        "command": "bun",
+        "args": ["run", "src/index.ts"],
+        "cwd": "/absolute/path/to/mcp-server-brreg",
+        "env": {
+          "TRANSPORT": "stdio"
+        }
+      }
+    }
+  },
+
+  "npx": {
+    "mcpServers": {
+      "brreg": {
+        "command": "npx",
+        "args": ["-y", "mcp-server-brreg"],
+        "env": {
+          "TRANSPORT": "stdio"
+        }
+      }
+    }
+  },
+
+  "local-docker": {
+    "mcpServers": {
+      "brreg": {
+        "command": "docker",
+        "args": [
+          "run", "-i", "--rm",
+          "-e", "TRANSPORT=stdio",
+          "ghcr.io/bergea1/mcp-server-brreg:latest"
+        ]
+      }
+    }
+  },
+
+  "remote-http": {
+    "mcpServers": {
+      "brreg": {
+        "type": "http",
+        "url": "https://mcp.example.no/mcp",
+        "headers": {
+          "Authorization": "Bearer replace-with-your-token"
+        }
+      }
+    }
+  }
+}

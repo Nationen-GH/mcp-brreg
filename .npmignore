@@ -1,0 +1,50 @@
+# The published package ships the compiled dist/ plus data/ (see "files" in
+# package.json, which already acts as an allowlist). This file is the belt to
+# that braces: anything added here stays out even if "files" is widened later.
+
+# Sources and build inputs
+src/
+test/
+scripts/
+tsconfig.json
+tsconfig.*.json
+*.tsbuildinfo
+
+# Source maps and declaration maps: they point at src/, which is not published,
+# so they only add weight.
+*.map
+
+# Tooling and CI
+.github/
+.claude/
+CLAUDE.md
+.prettierrc.json
+.editorconfig
+.eslintrc*
+.eslint.config.*
+
+# Container and local run files
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+build-and-run.sh
+mcp-config.json
+
+# Lockfiles: consumers resolve against their own registry state
+bun.lock
+bun.lockb
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Local and editor cruft
+.env
+.env.*
+.vscode/
+.idea/
+.DS_Store
+*.log
+coverage/
+.nyc_output/
+node_modules/

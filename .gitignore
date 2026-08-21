@@ -1,0 +1,22 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+.claude.local
+
+.env
+.env.*
+!.env.example
+
+*.log
+coverage/
+.nyc_output/
+
+.DS_Store
+.vscode/
+.idea/
+*.tgz
+*.tar.gz
+
+# Machine-local Claude Code overrides; .claude/settings.json is committed.
+.claude/settings.local.json
