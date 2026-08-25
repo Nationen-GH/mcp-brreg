@@ -144,6 +144,20 @@ opp underkoder.
 Registeret klassifiserer nå etter **SN2025**, ikke SN2007. Gamle koder som
 `41.109` gir null treff. Bruk `search_nace_codes` for å finne riktig kode.
 
+### Kildelenker
+
+Alle svar peker tilbake til siden informasjonen kommer fra, slik at modellen
+kan oppgi kilde:
+
+* Hvert foretak og hver underenhet får `webUrl` — den offentlige oppslagssiden
+  på [virksomhet.brreg.no](https://virksomhet.brreg.no), også i søketreff og
+  endringsfeeden.
+* `get_company_roles` får `_source` — foretakssiden der rollene står.
+* NACE-oppslagene får `_source` — SN2025-klassifikasjonen hos SSB.
+
+Lenkene legges bare på kompakte svar; `compact: false` gir API-dokumentet
+uendret.
+
 ### Paginering
 
 Sidetall er **nullbasert**. Første side er `page: 0`. Alle svar med flere sider
@@ -151,10 +165,10 @@ får et `_hint`-felt som sier hvilken side du er på og hva neste er.
 
 ### Kompakte svar
 
-Brreg svarer med HAL-dokumenter der hvert nøstede objekt har en `_links`-blokk.
-Serveren fjerner den, løfter `_embedded` opp, og minifiserer JSON-en. Det er
-39 % mindre på et foretakssøk, 69 % på roller og 84 % på kommunelisten. Sett
-`compact: false` på et kall for å få råsvaret med lenker.
+Brreg svarer med HAL-dokumenter der hvert nøstede objekt har en `_links`-blokk
+med API-URL-er. Serveren fjerner den, løfter `_embedded` opp, og minifiserer
+JSON-en. Det er 39 % mindre på et foretakssøk, 69 % på roller og 84 % på
+kommunelisten. Sett `compact: false` på et kall for å få råsvaret.
 
 ---
 
@@ -175,8 +189,8 @@ paginering, hierarkisk `naeringskode`, at registeret bruker SN2025, og at
 dem og åpner en issue hvis noe har endret seg oppstrøms.
 
 Se [CONTRIBUTING.md](CONTRIBUTING.md) for konvensjoner og hvordan du legger til
-et verktøy, [.claude/CLAUDE.md](.claude/CLAUDE.md) for arkitektur, og
-[SECURITY.md](SECURITY.md) for hvordan du rapporterer en sårbarhet.
+et verktøy, og [SECURITY.md](SECURITY.md) for hvordan du rapporterer en
+sårbarhet.
 
 GitHub leser ikke «About»-feltene fra repoet. `./test/sync-github-metadata.sh`
 skyver beskrivelse, hjemmeside og topics dit fra én kilde i repoet.

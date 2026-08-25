@@ -1,6 +1,3 @@
-# Everything the runtime image does not need. Keeping this tight matters for
-# build cache hits as well as image size — data/nace-codes-full.json is 1.7 MB
-# and is the only large file that must ship.
 .git
 .github
 .claude

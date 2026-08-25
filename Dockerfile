@@ -21,7 +21,7 @@ FROM base AS release
 LABEL org.opencontainers.image.title="Brønnøysundregistrene MCP Server" \
       org.opencontainers.image.description="MCP server for Brønnøysundregistrene (Norwegian Business Registry)" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.source="https://github.com/Nationen-GH/mcp-server-brreg"
+      org.opencontainers.image.source="https://github.com/Nationen-GH/brreg-mcp-server"
 
 COPY --from=install /app/node_modules ./node_modules
 COPY package.json tsconfig.json ./

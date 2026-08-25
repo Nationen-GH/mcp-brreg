@@ -58,7 +58,7 @@ export const TOOLS: Tool[] = [
   {
     name: 'search_companies',
     description:
-      'Search main units (hovedenheter) in the Norwegian Business Registry. Returns a page of matching companies. Use get_company for the full record of one company.',
+      'Search main units (hovedenheter) in the Norwegian Business Registry. Returns a page of matching companies, each with a webUrl pointing at its public brreg page — cite it when reporting the information. Use get_company for the full record of one company.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -147,7 +147,7 @@ export const TOOLS: Tool[] = [
   {
     name: 'get_company',
     description:
-      'Get the full record for one main unit by organisation number, including addresses, industry codes, registry flags and historical names.',
+      'Get the full record for one main unit by organisation number, including addresses, industry codes, registry flags and historical names. The result includes webUrl, the public brreg page for the company — cite it as the source.',
     inputSchema: {
       type: 'object',
       properties: { organizationNumber: orgNumberProp, compact: compactParam },
@@ -157,7 +157,7 @@ export const TOOLS: Tool[] = [
   {
     name: 'get_company_roles',
     description:
-      'Get registered roles for one main unit — board members, CEO, auditor, accountant and signature/procuration rights, grouped by role type.',
+      'Get registered roles for one main unit — board members, CEO, auditor, accountant and signature/procuration rights, grouped by role type. The result includes _source, the public brreg page where these roles are listed.',
     inputSchema: {
       type: 'object',
       properties: { organizationNumber: orgNumberProp, compact: compactParam },
@@ -167,7 +167,7 @@ export const TOOLS: Tool[] = [
   {
     name: 'search_subunits',
     description:
-      'Search subunits (underenheter) — the individual establishments belonging to a main unit. Filter by parentCompany to list every location of a company.',
+      'Search subunits (underenheter) — the individual establishments belonging to a main unit. Filter by parentCompany to list every location of a company. Each hit carries a webUrl pointing at its public brreg page.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -206,7 +206,8 @@ export const TOOLS: Tool[] = [
   },
   {
     name: 'get_subunit',
-    description: 'Get the full record for one subunit by organisation number.',
+    description:
+      'Get the full record for one subunit by organisation number. The result includes webUrl, the public brreg page for the subunit.',
     inputSchema: {
       type: 'object',
       properties: { organizationNumber: orgNumberProp, compact: compactParam },

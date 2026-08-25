@@ -8,6 +8,8 @@
  * pretty-printed JSON — is the cheapest large win available to this server.
  */
 
+import { addSourceLinks, type UnitKind } from './links.js';
+
 /** Keys removed from every response when compact mode is on. */
 const NOISE_KEYS = new Set(['_links', 'links']);
 
@@ -51,6 +53,11 @@ export interface FormatOptions {
   compact?: boolean;
   /** Extra fields merged into the emitted object, e.g. pagination hints. */
   meta?: Record<string, unknown>;
+  /**
+   * Add a `webUrl` (the public virksomhet.brreg.no page) to every unit of
+   * this kind. Applied in compact mode only — the raw document stays raw.
+   */
+  sourceLinks?: UnitKind;
 }
 
 /**
@@ -70,7 +77,10 @@ export function toolResult(payload: unknown, options: FormatOptions = {}): ToolR
   const compact = options.compact !== false;
 
   let body: unknown = payload;
-  if (compact) body = stripHalNoise(flattenEmbedded(payload));
+  if (compact) {
+    body = stripHalNoise(flattenEmbedded(payload));
+    if (options.sourceLinks) body = addSourceLinks(body, options.sourceLinks);
+  }
 
   if (options.meta && body !== null && typeof body === 'object' && !Array.isArray(body)) {
     body = { ...(body as Record<string, unknown>), ...options.meta };

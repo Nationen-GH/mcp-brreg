@@ -2,7 +2,7 @@
 
 ## Rapportere en sårbarhet
 
-Bruk **[Report a vulnerability](https://github.com/Nationen-GH/mcp-server-brreg/security/advisories/new)**
+Bruk **[Report a vulnerability](https://github.com/Nationen-GH/brreg-mcp-server/security/advisories/new)**
 under Security-fanen. Da havner rapporten i en privat rådgivning, ikke i en
 offentlig issue.
 

@@ -58,11 +58,10 @@ Skal du oppgradere bun, gjør begge deler i samme commit:
 
 Fire antakelser bærer denne serveren, og ingen av dem er åpenbare fra koden:
 nullbasert paginering, hierarkisk `naeringskode`-utvidelse, at registeret bruker
-SN2025, og at 400-svar inneholder `valideringsfeil`. De er dokumentert i
-[.claude/CLAUDE.md](.claude/CLAUDE.md) og voktes av
+SN2025, og at 400-svar inneholder `valideringsfeil`. De voktes av
 `test/integration.test.ts`, som en ukentlig workflow kjører mot det ekte API-et.
 
-Endrer du noe som rører ved dem, oppdater både testen og notatet.
+Endrer du noe som rører ved dem, oppdater testen.
 
 ## Pull requests
 

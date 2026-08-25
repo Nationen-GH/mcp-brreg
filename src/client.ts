@@ -6,7 +6,7 @@ import {
   BrregErrorResponse,
 } from './types.js';
 
-const PACKAGE_VERSION = '1.1.0';
+const PACKAGE_VERSION = '1.2.0';
 
 export interface BrregClientOptions {
   baseURL?: string;

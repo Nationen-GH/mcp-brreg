@@ -197,6 +197,92 @@ describe('search_companies', () => {
 
     expect(textOf(result)).toContain('_links');
     expect(textOf(result)).toContain('_embedded');
+    expect(textOf(result)).not.toContain('webUrl');
+  });
+});
+
+describe('source links', () => {
+  test('search hits carry the public brreg page of each company', async () => {
+    stubBrreg({
+      _embedded: { enheter: [{ organisasjonsnummer: '923609016', navn: 'EQUINOR ASA' }] },
+      page: { number: 0, totalPages: 1, size: 1, totalElements: 1 },
+    });
+
+    const result = await ctx.client.callTool({
+      name: 'search_companies',
+      arguments: { name: 'Equinor' },
+    });
+    const payload = JSON.parse(textOf(result));
+
+    expect(payload.enheter[0].webUrl).toBe(
+      'https://virksomhet.brreg.no/nb/oppslag/enheter/923609016'
+    );
+  });
+
+  test('get_company includes its own webUrl', async () => {
+    stubBrreg({ organisasjonsnummer: '923609016', navn: 'EQUINOR ASA' });
+
+    const result = await ctx.client.callTool({
+      name: 'get_company',
+      arguments: { organizationNumber: '923609016' },
+    });
+
+    expect(JSON.parse(textOf(result)).webUrl).toBe(
+      'https://virksomhet.brreg.no/nb/oppslag/enheter/923609016'
+    );
+  });
+
+  test('get_subunit links to the subunit page', async () => {
+    stubBrreg({ organisasjonsnummer: '973152351', navn: 'AVDELING' });
+
+    const result = await ctx.client.callTool({
+      name: 'get_subunit',
+      arguments: { organizationNumber: '973152351' },
+    });
+
+    expect(JSON.parse(textOf(result)).webUrl).toBe(
+      'https://virksomhet.brreg.no/nb/oppslag/underenheter/973152351'
+    );
+  });
+
+  test('get_company_roles points _source at the company page', async () => {
+    stubBrreg({ rollegrupper: [] });
+
+    const result = await ctx.client.callTool({
+      name: 'get_company_roles',
+      arguments: { organizationNumber: '923609016' },
+    });
+
+    expect(JSON.parse(textOf(result))._source).toBe(
+      'https://virksomhet.brreg.no/nb/oppslag/enheter/923609016'
+    );
+  });
+
+  test('the change feed links every updated unit', async () => {
+    stubBrreg({
+      _embedded: {
+        oppdaterteEnheter: [{ oppdateringsid: 7, organisasjonsnummer: '923609016' }],
+      },
+      page: { number: 0, totalPages: 1, size: 1, totalElements: 1 },
+    });
+
+    const result = await ctx.client.callTool({ name: 'get_company_updates', arguments: {} });
+    const payload = JSON.parse(textOf(result));
+
+    expect(payload.oppdaterteEnheter[0].webUrl).toBe(
+      'https://virksomhet.brreg.no/nb/oppslag/enheter/923609016'
+    );
+  });
+
+  test('NACE lookups cite the SSB Klass classification page', async () => {
+    const search = await ctx.client.callTool({
+      name: 'search_nace_codes',
+      arguments: { exactCode: '01.110' },
+    });
+    const info = await ctx.client.callTool({ name: 'get_nace_classification_info', arguments: {} });
+
+    expect(JSON.parse(textOf(search))._source).toBe('https://www.ssb.no/klass/klassifikasjoner/6');
+    expect(JSON.parse(textOf(info))._source).toBe('https://www.ssb.no/klass/klassifikasjoner/6');
   });
 });
 

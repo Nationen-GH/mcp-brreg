@@ -6,6 +6,7 @@ import { BrregAPIClient } from './client.js';
 import { NACEUtils } from './nace-utils.js';
 import { TOOLS } from './tools.js';
 import { errorResult, paginationHint, toolResult, type ToolResult } from './compact.js';
+import { companyPageUrl, NACE_SOURCE_URL, type UnitKind } from './links.js';
 import {
   BrregAPIError,
   BrregNotFoundError,
@@ -14,7 +15,7 @@ import {
 } from './types.js';
 
 export const SERVER_NAME = 'mcp-server-brreg';
-export const SERVER_VERSION = '1.1.0';
+export const SERVER_VERSION = '1.2.0';
 
 const API = '/enhetsregisteret/api';
 
@@ -54,13 +55,13 @@ export class BrregMCPServer {
   private dispatch(name: string, args: Args): Promise<ToolResult> {
     switch (name) {
       case 'search_companies':
-        return this.searchUnits(`${API}/enheter`, args, true);
+        return this.searchUnits(`${API}/enheter`, args, 'enhet');
       case 'search_subunits':
-        return this.searchUnits(`${API}/underenheter`, args, false);
+        return this.searchUnits(`${API}/underenheter`, args, 'underenhet');
       case 'get_company':
-        return this.getUnit(`${API}/enheter`, args);
+        return this.getUnit(`${API}/enheter`, args, 'enhet');
       case 'get_subunit':
-        return this.getUnit(`${API}/underenheter`, args);
+        return this.getUnit(`${API}/underenheter`, args, 'underenhet');
       case 'get_company_roles':
         return this.getCompanyRoles(args);
       case 'get_services':
@@ -84,13 +85,18 @@ export class BrregMCPServer {
       case 'get_role_representatives':
         return this.simpleGet(`${API}/roller/representanter`, args, CACHEABLE);
       case 'get_company_updates':
-        return this.getUpdates(`${API}/oppdateringer/enheter`, args);
+        return this.getUpdates(`${API}/oppdateringer/enheter`, args, 'enhet');
       case 'get_subunit_updates':
-        return this.getUpdates(`${API}/oppdateringer/underenheter`, args);
+        return this.getUpdates(`${API}/oppdateringer/underenheter`, args, 'underenhet');
       case 'search_nace_codes':
         return this.searchNACECodes(args);
       case 'get_nace_classification_info':
-        return Promise.resolve(toolResult(NACEUtils.getClassificationInfo(), { compact: true }));
+        return Promise.resolve(
+          toolResult(NACEUtils.getClassificationInfo(), {
+            compact: true,
+            meta: { _source: NACE_SOURCE_URL },
+          })
+        );
       default:
         throw new BrregValidationError(`Unknown tool: ${name}`);
     }
@@ -98,11 +104,8 @@ export class BrregMCPServer {
 
   // -- unit search -----------------------------------------------------------
 
-  private async searchUnits(
-    endpoint: string,
-    args: Args,
-    isMainUnit: boolean
-  ): Promise<ToolResult> {
+  private async searchUnits(endpoint: string, args: Args, kind: UnitKind): Promise<ToolResult> {
+    const isMainUnit = kind === 'enhet';
     assertOrgNumbers(args.organizationNumber, 'organizationNumber');
     assertOrgNumber(args.parentCompany, 'parentCompany');
     assertMunicipalityNumbers(args.municipalityNumber, 'municipalityNumber');
@@ -143,15 +146,15 @@ export class BrregMCPServer {
         'expandIndustryCodes hit its 500-code ceiling, so the filter was truncated. The API expands codes hierarchically on its own — drop expandIndustryCodes and pass the broader code instead.';
     }
 
-    return toolResult(response, { compact: wantsCompact(args), meta });
+    return toolResult(response, { compact: wantsCompact(args), meta, sourceLinks: kind });
   }
 
-  private async getUnit(endpoint: string, args: Args): Promise<ToolResult> {
+  private async getUnit(endpoint: string, args: Args, kind: UnitKind): Promise<ToolResult> {
     const orgNr = args.organizationNumber;
     assertOrgNumber(orgNr, 'organizationNumber', true);
 
     const response = await this.client.get(`${endpoint}/${orgNr as string}`);
-    return toolResult(response, { compact: wantsCompact(args) });
+    return toolResult(response, { compact: wantsCompact(args), sourceLinks: kind });
   }
 
   private async getCompanyRoles(args: Args): Promise<ToolResult> {
@@ -159,7 +162,12 @@ export class BrregMCPServer {
     assertOrgNumber(orgNr, 'organizationNumber', true);
 
     const response = await this.client.get(`${API}/enheter/${orgNr as string}/roller`);
-    return toolResult(response, { compact: wantsCompact(args) });
+    return toolResult(response, {
+      compact: wantsCompact(args),
+      // The roles payload carries no organisation number of its own, so the
+      // reference link goes in as metadata: roles are shown on the company page.
+      meta: { _source: companyPageUrl(orgNr as string) },
+    });
   }
 
   // -- reference data --------------------------------------------------------
@@ -210,7 +218,7 @@ export class BrregMCPServer {
     return toolResult(response, { compact: wantsCompact(args) });
   }
 
-  private async getUpdates(endpoint: string, args: Args): Promise<ToolResult> {
+  private async getUpdates(endpoint: string, args: Args, kind: UnitKind): Promise<ToolResult> {
     assertOrgNumbers(args.organizationNumber, 'organizationNumber');
 
     const params = this.client.buildParams({
@@ -226,6 +234,7 @@ export class BrregMCPServer {
     return toolResult(response, {
       compact: wantsCompact(args),
       meta: paginationHint(response),
+      sourceLinks: kind,
     });
   }
 
@@ -274,6 +283,7 @@ export class BrregMCPServer {
           ? { _hint: `${total - codes.length} more matches; raise "limit" or narrow the query.` }
           : {}),
         codes,
+        _source: NACE_SOURCE_URL,
       },
       { compact: true }
     );

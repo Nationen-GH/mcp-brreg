@@ -6,7 +6,7 @@
       "brreg": {
         "command": "bun",
         "args": ["run", "src/index.ts"],
-        "cwd": "/absolute/path/to/mcp-server-brreg",
+        "cwd": "/absolute/path/to/brreg-mcp-server",
         "env": {
           "TRANSPORT": "stdio"
         }
@@ -33,7 +33,7 @@
         "args": [
           "run", "-i", "--rm",
           "-e", "TRANSPORT=stdio",
-          "ghcr.io/nationen-gh/mcp-server-brreg:latest"
+          "ghcr.io/nationen-gh/brreg-mcp-server:latest"
         ]
       }
     }
