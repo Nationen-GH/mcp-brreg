@@ -46,26 +46,16 @@ docker run -d -p 127.0.0.1:3000:3000 \
 | `GET /health` | Helsesjekk, brukes av Docker |
 | `GET /` | Metadata om serveren |
 
-Den gamle HTTP+SSE-transporten (`GET /sse` + `POST /messages`, MCP 2024-11-05)
-er fjernet. `TRANSPORT=sse` godtas fortsatt som alias for `http`, slik at et
-eksisterende oppsett fortsetter å servere `/mcp` i stedet for å falle stille
-tilbake til stdio — men det logger en advarsel. Pek klienter mot `/mcp`.
-
 ---
 
 ## Klientoppsett
 
-Se `mcp-config.json` for ferdige blokker — én per transport. Serveren heter
-`brreg` i alle sammen, slik at verktøynavnene modellen ser
-(`mcp__brreg__search_companies` og de andre) er de samme uansett om du kjører
-via Bun, Docker eller remote. Bytter du transport, trenger du bare å bytte
-innmaten:
+Se `mcp-config.json` for ferdige blokker.
 
 ```jsonc
 {
   "mcpServers": {
     "brreg": {
-      // Lokalt, fra en klon av repoet
       "command": "bun",
       "args": ["run", "src/index.ts"],
       "cwd": "/absolute/path/to/mcp-brreg",
@@ -86,10 +76,10 @@ innmaten:
 
 | Variabel | Standard | Beskrivelse |
 | --- | --- | --- |
-| `TRANSPORT` | `stdio`, eller `http` hvis `PORT` er satt | `stdio` eller `http`. `sse` godtas fortsatt som utfaset alias for `http`. |
-| `PORT` | `3000` | Port for HTTP-transporten |
-| `HOST` | `0.0.0.0` | Bind-adresse |
-| `AUTH_TOKEN` / `BEARER_TOKEN` | *ingen* | Krever `Authorization: Bearer <token>`. **Sett den alltid** når serveren er nåbar utenfra. |
+| `TRANSPORT` | `stdio`, eller `http` hvis `PORT` er satt | `stdio` eller `http`. |
+| `PORT` | `3000` | |
+| `HOST` | `0.0.0.0` | |
+| `AUTH_TOKEN` / `BEARER_TOKEN` | *ingen* | Krever `Authorization: Bearer <token>`. |
 | `ALLOWED_ORIGINS` | `*` | Kommaseparert CORS-allowlist for nettleserklienter |
 | `BRREG_BASE_URL` | `https://data.brreg.no` | Overstyr API-roten |
 | `BRREG_TIMEOUT_MS` | `30000` | Timeout per forespørsel |
@@ -183,18 +173,6 @@ bun run typecheck
 bun run format
 ./build-and-run.sh check  # alt over, pluss build og røyktest under Node
 ```
-
-`test/integration.test.ts` sjekker antakelsene serveren hviler på — nullbasert
-paginering, hierarkisk `naeringskode`, at registeret bruker SN2025, og at
-400-svar inneholder `valideringsfeil`. En ukentlig GitHub Actions-jobb kjører
-dem og åpner en issue hvis noe har endret seg oppstrøms.
-
-Se [CONTRIBUTING.md](CONTRIBUTING.md) for konvensjoner og hvordan du legger til
-et verktøy, og [SECURITY.md](SECURITY.md) for hvordan du rapporterer en
-sårbarhet.
-
-GitHub leser ikke «About»-feltene fra repoet. `./test/sync-github-metadata.sh`
-skyver beskrivelse, hjemmeside og topics dit fra én kilde i repoet.
 
 ---
 

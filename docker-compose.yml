@@ -7,18 +7,13 @@ services:
     container_name: mcp-brreg
     restart: unless-stopped
     ports:
-      # Bound to loopback by default. Change to "3000:3000" only when the server
-      # is behind a TLS terminator and AUTH_TOKEN is set to a real secret.
       - "127.0.0.1:3000:3000"
     environment:
       PORT: 3000
       HOST: 0.0.0.0
       TRANSPORT: http
-      # Required. Compose fails to start if AUTH_TOKEN is unset, rather than
-      # silently publishing an unauthenticated server with a guessable default.
       AUTH_TOKEN: ${AUTH_TOKEN:?set AUTH_TOKEN, e.g. AUTH_TOKEN=$(openssl rand -hex 32) docker compose up -d}
-      # Comma-separated browser origins, or * to allow any.
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-*}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-*}  # Comma-separated browser origins, or * to allow any.
     healthcheck:
       test: ["CMD", "/usr/local/bin/healthcheck"]
       interval: 30s
