@@ -1,5 +1,5 @@
 {
-  "name": "mcp-server-brreg",
+  "name": "mcp-brreg",
   "version": "1.2.0",
   "description": "Model Context Protocol server for Br\u00f8nn\u00f8ysundregistrene (the Norwegian Business Registry)",
   "keywords": [
@@ -11,13 +11,13 @@
     "norway",
     "open-data"
   ],
-  "homepage": "https://github.com/Nationen-GH/brreg-mcp-server#readme",
+  "homepage": "https://github.com/Nationen-GH/mcp-brreg#readme",
   "bugs": {
-    "url": "https://github.com/Nationen-GH/brreg-mcp-server/issues"
+    "url": "https://github.com/Nationen-GH/mcp-brreg/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Nationen-GH/brreg-mcp-server.git"
+    "url": "git+https://github.com/Nationen-GH/mcp-brreg.git"
   },
   "author": "Aleksander Berge",
   "license": "MIT",
@@ -25,7 +25,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "mcp-server-brreg": "dist/index.js"
+    "mcp-brreg": "dist/index.js"
   },
   "exports": {
     ".": {

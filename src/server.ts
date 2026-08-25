@@ -14,7 +14,7 @@ import {
   BrregValidationError,
 } from './types.js';
 
-export const SERVER_NAME = 'mcp-server-brreg';
+export const SERVER_NAME = 'mcp-brreg';
 export const SERVER_VERSION = '1.2.0';
 
 const API = '/enhetsregisteret/api';

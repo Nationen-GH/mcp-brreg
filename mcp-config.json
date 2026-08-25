@@ -6,19 +6,7 @@
       "brreg": {
         "command": "bun",
         "args": ["run", "src/index.ts"],
-        "cwd": "/absolute/path/to/brreg-mcp-server",
-        "env": {
-          "TRANSPORT": "stdio"
-        }
-      }
-    }
-  },
-
-  "npx": {
-    "mcpServers": {
-      "brreg": {
-        "command": "npx",
-        "args": ["-y", "mcp-server-brreg"],
+        "cwd": "/absolute/path/to/mcp-brreg",
         "env": {
           "TRANSPORT": "stdio"
         }
@@ -33,7 +21,7 @@
         "args": [
           "run", "-i", "--rm",
           "-e", "TRANSPORT=stdio",
-          "ghcr.io/nationen-gh/brreg-mcp-server:latest"
+          "ghcr.io/nationen-gh/mcp-brreg:latest"
         ]
       }
     }

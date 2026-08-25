@@ -1,10 +1,10 @@
 services:
-  mcp-server-brreg:
+  mcp-brreg:
     build:
       context: .
       dockerfile: Dockerfile
-    image: mcp-server-brreg:latest
-    container_name: mcp-server-brreg
+    image: mcp-brreg:latest
+    container_name: mcp-brreg
     restart: unless-stopped
     ports:
       # Bound to loopback by default. Change to "3000:3000" only when the server

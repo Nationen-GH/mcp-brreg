@@ -69,7 +69,7 @@ export class BrregAPIClient {
     this.cacheTtlMs = options.cacheTtlMs ?? intFromEnv('BRREG_CACHE_TTL_MS', DEFAULTS.cacheTtlMs);
     this.cacheMaxEntries =
       options.cacheMaxEntries ?? intFromEnv('BRREG_CACHE_MAX_ENTRIES', DEFAULTS.cacheMaxEntries);
-    this.userAgent = options.userAgent ?? `mcp-server-brreg/${PACKAGE_VERSION}`;
+    this.userAgent = options.userAgent ?? `mcp-brreg/${PACKAGE_VERSION}`;
   }
 
   /**

@@ -87,7 +87,7 @@ jobs:
         with:
           context: .
           load: true
-          tags: mcp-server-brreg:ci
+          tags: mcp-brreg:ci
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -95,7 +95,7 @@ jobs:
         run: |
           docker run -d --name brreg-ci -p 3000:3000 \
             -e TRANSPORT=http -e AUTH_TOKEN=ci-token \
-            mcp-server-brreg:ci
+            mcp-brreg:ci
 
       - name: Wait for the health check to pass
         run: |
@@ -125,7 +125,7 @@ jobs:
             -H 'Accept: application/json, text/event-stream' \
             -d "$body")
           echo "$response"
-          echo "$response" | grep -q 'mcp-server-brreg'
+          echo "$response" | grep -q 'mcp-brreg'
 
       - name: Show logs on failure
         if: failure()

@@ -19,10 +19,10 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-REPO="Nationen-GH/brreg-mcp-server"
+REPO="Nationen-GH/mcp-brreg"
 
 DESCRIPTION="MCP-server for Brønnøysundregistrene — norske foretak, underenheter, roller og næringskoder som verktøy for språkmodeller"
-HOMEPAGE="https://github.com/Nationen-GH/brreg-mcp-server#readme"
+HOMEPAGE="https://github.com/Nationen-GH/mcp-brreg#readme"
 
 # Lowercase, digits and hyphens only; GitHub allows at most 20.
 TOPICS=(

@@ -33,11 +33,11 @@ TLS-terminering.
 Uten Compose:
 
 ```bash
-docker build -t mcp-server-brreg .
+docker build -t mcp-brreg .
 docker run -d -p 127.0.0.1:3000:3000 \
   -e TRANSPORT=http \
   -e AUTH_TOKEN="$(openssl rand -hex 32)" \
-  --name mcp-server-brreg mcp-server-brreg
+  --name mcp-brreg mcp-brreg
 ```
 
 | Endepunkt | Beskrivelse |
@@ -58,16 +58,17 @@ tilbake til stdio — men det logger en advarsel. Pek klienter mot `/mcp`.
 Se `mcp-config.json` for ferdige blokker — én per transport. Serveren heter
 `brreg` i alle sammen, slik at verktøynavnene modellen ser
 (`mcp__brreg__search_companies` og de andre) er de samme uansett om du kjører
-via npx, Bun, Docker eller remote. Bytter du transport, trenger du bare å bytte
+via Bun, Docker eller remote. Bytter du transport, trenger du bare å bytte
 innmaten:
 
 ```jsonc
 {
   "mcpServers": {
     "brreg": {
-      // Lokalt, uten å installere noe
-      "command": "npx",
-      "args": ["-y", "mcp-server-brreg"],
+      // Lokalt, fra en klon av repoet
+      "command": "bun",
+      "args": ["run", "src/index.ts"],
+      "cwd": "/absolute/path/to/mcp-brreg",
       "env": { "TRANSPORT": "stdio" }
 
       // ... eller remote, med bearer-token:
